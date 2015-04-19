@@ -11,9 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
 
-        <Button
+        <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Modal"
@@ -23,7 +24,7 @@
             android:layout_below="@+id/btnViewLevels"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp" />-->
 
         <Button
             android:layout_width="wrap_content"
@@ -49,5 +50,15 @@
             android:layout_marginBottom="40dp"
             android:layout_margin="10dp" />
     </LinearLayout>
+
+    <!--<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Launch DB"
+        android:id="@+id/btnDB"
+        android:background="@drawable/btn_bg"
+        android:textColor="#fff"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />-->
 
 </RelativeLayout>

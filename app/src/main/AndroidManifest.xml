@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.clay.modaltester" >
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,8 +23,19 @@
             android:name=".LevelView"
             android:label="@string/level_view_name"
             android:screenOrientation="landscape">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.clay.modaltester.ModalTester" />
         </activity>
+        <activity
+            android:name=".BallGame"
+            android:label="@string/ball_game"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.clay.modaltester.LevelView" />
+        </activity>
+        <activity android:name=".AndroidDatabaseManager" />
     </application>
 
 </manifest>

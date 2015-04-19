@@ -153,18 +153,9 @@ public class LevelView extends Activity {
 
 
     public void showLevelSelection(){
-        System.out.println(currentLevel.imgSrc);
-        System.out.println(currentLevel.levelName);
         // parse it aas a Level
-        int resId = this.getResources().getIdentifier("drawable/" + currentLevel.imgSrc, "drawable", this.getPackageName());
-        int resId2 = this.getResources().getIdentifier("drawable/" + currentLevel.imgSrc + ".png", null, this.getPackageName());
-        System.out.println(resId);
-        System.out.println(resId2);
+        int resId = this.getResources().getIdentifier("drawable/" + currentLevel.getImgSrc(), "drawable", this.getPackageName());
         lvlImageView.setImageResource(resId);
-        lvlImageView.setContentDescription(currentLevel.levelName);
-
-        System.out.println(lvlImageView.getContentDescription());
-        System.out.println(lvlImageView.getDrawable().toString());
-
+        lvlImageView.setContentDescription(currentLevel.getLevelName());
     }
 }

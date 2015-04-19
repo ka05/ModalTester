@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -82,6 +83,18 @@ public class ModalTester extends Activity {
 
         });
 
+//        Button btnDB = (Button)findViewById(R.id.btnDB);
+//        btnDB.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                Intent dbmanager = new Intent(ModalTester.this,AndroidDatabaseManager.class);
+//                startActivity(dbmanager);
+//            }
+//
+//        });
+
     }
 
     /**
@@ -106,6 +119,7 @@ public class ModalTester extends Activity {
                         showLevels();
                     }
                 });
+
                 break;
             case "info":
                 d.setContentView(R.layout.info_modal_content);
