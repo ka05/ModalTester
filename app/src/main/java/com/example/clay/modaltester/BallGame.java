@@ -8,7 +8,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
 import android.hardware.Sensor;
@@ -41,6 +43,7 @@ public class BallGame extends Activity implements SensorEventListener {
     private float xPosition, pitch , xVelocity = 0.0f;
     private float yPosition, roll , yVelocity = 0.0f;
     private int xMax, yMax;
+    private int totalLevelCoinCount = 0;
     private Bitmap mBitmap;
     private Bitmap mWood;
     private SensorManager sensorManager;
@@ -97,6 +100,7 @@ public class BallGame extends Activity implements SensorEventListener {
 
         new LoadLevelTask().execute(currentLevelId);
 
+        // use this to hold collision points for walls
         levelCollisionPoints = new ArrayList<>();
         levelCollisionPoints.add(new Point(20, yMax));
     }
@@ -176,9 +180,14 @@ public class BallGame extends Activity implements SensorEventListener {
             if ( ( (int)xPosition > coin.getxPos() && (int)xPosition < coin.getxPos() + 50 ) && ( (int)yPosition > coin.getyPos() && (int)yPosition < coin.getyPos() + 50 )) {
                 System.out.println("[X]: coin pos: " + coin.getxPos() + " ball pos: " + xPosition);
                 System.out.println("[Y]: coin pos: " + coin.getyPos() + " ball pos: " + yPosition + "Hit a Coin of type:" + coin.getType());
+                updateCoinCount(coin.getValue());
                 levelCoins.remove(coin);
             }
         }
+    }
+
+    public void updateCoinCount(int val){
+        totalLevelCoinCount += val;
     }
 
     @Override
@@ -216,6 +225,10 @@ public class BallGame extends Activity implements SensorEventListener {
 
         protected void onDraw(Canvas canvas)
         {
+            Paint p = new Paint();
+            p.setColor(Color.BLACK);
+            p.setTextSize(24);
+            canvas.drawText("Score: " + totalLevelCoinCount, yMax - 100, 40, p);
             final Bitmap bitmap = mBitmap;
 //            canvas.drawBitmap(mWood, 0, 0, null); // for background image on canvas
             canvas.drawBitmap(bitmap, xPosition, yPosition, null);

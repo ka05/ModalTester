@@ -32,7 +32,9 @@ public class Level {
         coins.add(new Coin(20, 100, "reg"));
         coins.add(new Coin(20, 180, "sp"));
         coins.add(new Coin(180, 20, "reg"));
-        coins.add(new Coin(180, 100, "sp"));
+        coins.add(new Coin(300, 100, "sp"));
+        coins.add(new Coin(400, 100, "sp"));
+        coins.add(new Coin(500, 100, "sp"));
     }
 
     public String getImgSrc() {
