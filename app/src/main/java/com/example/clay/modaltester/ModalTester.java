@@ -51,19 +51,17 @@ public class ModalTester extends Activity {
         });
 
         // launch modalButton
-        findViewById(R.id.btnLaunchModal).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                HashMap<String, String> options = new HashMap<String, String>();
-                // options:
-//                options.put("", "");
-                launchModal("level_complete", options);
-
-            }
-
-        });
+//        findViewById(R.id.btnLaunchModal).setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                HashMap<String, String> options = new HashMap<String, String>();
+//                // options:
+////                options.put("", "");
+//                launchModal("level_complete", options);
+//            }
+//        });
 
         // about button
         findViewById(R.id.btnViewAbout).setOnClickListener(new View.OnClickListener() {

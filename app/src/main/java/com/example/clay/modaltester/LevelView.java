@@ -148,6 +148,7 @@ public class LevelView extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // get currentLevelData
             new LoadLevelTask().execute(id);
+            levelRow = id;
         }
     }; //end OnItemClick
 

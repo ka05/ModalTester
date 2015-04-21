@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:baselineAligned="false"
-        android:background="#000000">
+        android:background="@drawable/android_bg">
 
         <ListView
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:id="@+id/levelImage"
-                android:background="@drawable/example" />
+                android:background="@drawable/no_level" />
 
             <Button
                 android:layout_width="match_parent"
