@@ -8,13 +8,14 @@ import java.util.ArrayList;
 public class Level {
     private String levelName;
     private String imgSrc;
+    private String levelCompleted;
     private ArrayList<Coin> coins;
 
     // later will want to probably pass in the levelId from database results and get the levels coins
-    public Level(String levelName, String imgSrc){
+    public Level(String levelName, String imgSrc, String levelCompleted){
         this.levelName = levelName;
         this.imgSrc = imgSrc;
-
+        this.levelCompleted = levelCompleted;
         // will want to get / initialize the level's coin locations here
         initCoins();
     }
@@ -28,13 +29,12 @@ public class Level {
         // loop through array of points existing for each level's boundaries
         // and do math to position the coin equidistant from each wall.
 
-        coins.add(new Coin(20, 20, "reg"));
-        coins.add(new Coin(20, 100, "reg"));
-        coins.add(new Coin(20, 180, "sp"));
+        coins.add(new Coin(20, 180, "bad"));
+        coins.add(new Coin(20, 260, "sp"));
         coins.add(new Coin(180, 20, "reg"));
+        coins.add(new Coin(180, 600, "reg"));
         coins.add(new Coin(300, 100, "sp"));
-        coins.add(new Coin(400, 100, "sp"));
-        coins.add(new Coin(500, 100, "sp"));
+        coins.add(new Coin(600, 100, "bad"));
     }
 
     public String getImgSrc() {
@@ -54,5 +54,13 @@ public class Level {
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
+    }
+
+    public String getLevelCompleted() {
+        return levelCompleted;
+    }
+
+    public void setLevelCompleted(String levelCompleted) {
+        this.levelCompleted = levelCompleted;
     }
 }

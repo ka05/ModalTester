@@ -33,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,7 +46,7 @@ public class BallGame extends Activity implements SensorEventListener {
     private int xMax, yMax;
     private int totalLevelCoinCount = 0;
     private Bitmap mBitmap;
-    private Bitmap mWood;
+    private Bitmap mBg;
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magnetometer;
@@ -55,12 +56,11 @@ public class BallGame extends Activity implements SensorEventListener {
     private float frameTime = 0.666f;
     private Level currentLevel;
     public int windowHeight, windowWidth;
+    private AudioPlayer ap;
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         // Set to fullscreen and landscape
@@ -90,6 +90,8 @@ public class BallGame extends Activity implements SensorEventListener {
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         windowHeight = displaymetrics.heightPixels;
         windowWidth = displaymetrics.widthPixels;
+
+        ap = new AudioPlayer(this);
     }
 
     public void initializeLevel(){
@@ -174,15 +176,38 @@ public class BallGame extends Activity implements SensorEventListener {
             yPosition = 0;
         }
 
-        // loop through coins array and see if the ball hits one of them.
-        for(int i = 0; i < levelCoins.size(); i++){
-            Coin coin = levelCoins.get(i);
-            if ( ( (int)xPosition > coin.getxPos() && (int)xPosition < coin.getxPos() + 50 ) && ( (int)yPosition > coin.getyPos() && (int)yPosition < coin.getyPos() + 50 )) {
-                System.out.println("[X]: coin pos: " + coin.getxPos() + " ball pos: " + xPosition);
-                System.out.println("[Y]: coin pos: " + coin.getyPos() + " ball pos: " + yPosition + "Hit a Coin of type:" + coin.getType());
-                updateCoinCount(coin.getValue());
-                levelCoins.remove(coin);
+        // if there are level coins left
+        if(levelCoins.size() > 0){
+            // loop through coins array and see if the ball hits one of them.
+            for(int i = 0; i < levelCoins.size(); i++){
+                Coin coin = levelCoins.get(i);
+                if ( ( (int)xPosition < coin.getxPos() + 50 && (int)xPosition > coin.getxPos() - 50 ) && ( (int)yPosition < coin.getyPos() + 50 && (int)yPosition > coin.getyPos() - 50 )) {
+//                    System.out.println("[X]: coin pos: " + coin.getxPos() + " ball pos: " + xPosition);
+//                    System.out.println("[Y]: coin pos: " + coin.getyPos() + " ball pos: " + yPosition + "Hit a Coin of type:" + coin.getType());
+                    hitCoin(coin);
+                }
             }
+        }
+
+    }
+
+    private void hitCoin(Coin coin){
+        updateCoinCount(coin.getValue());
+        levelCoins.remove(coin);
+        switch(coin.getType()){
+            case "reg":
+                ap.startSound(this, "coin10");
+                break;
+            case "sp":
+                ap.startSound(this, "coin1");
+                break;
+            case "bad":
+                ap.startSound(this, "coinBad");
+                break;
+        }
+        if(levelCoins.size() < 1){
+            ap.die();
+            showEndGameModal();
         }
     }
 
@@ -218,20 +243,26 @@ public class BallGame extends Activity implements SensorEventListener {
             final int dstWidth = 50;
             final int dstHeight = 50;
             mBitmap = Bitmap.createScaledBitmap(ball, dstWidth, dstHeight, true);
-//            mWood = BitmapFactory.decodeResource(getResources(), R.drawable.wood);
+            mBg = BitmapFactory.decodeResource(getResources(), R.drawable.android_game_bg2);
             matrix = new Matrix();
 
         }
 
         protected void onDraw(Canvas canvas)
         {
+
+            final Bitmap bitmap = mBitmap;
+
+            // draw background
+            canvas.drawBitmap(mBg, 0, 0, null); // for background image on canvas
+
+            // draw score
             Paint p = new Paint();
             p.setColor(Color.BLACK);
             p.setTextSize(24);
             canvas.drawText("Score: " + totalLevelCoinCount, yMax - 100, 40, p);
-            final Bitmap bitmap = mBitmap;
-//            canvas.drawBitmap(mWood, 0, 0, null); // for background image on canvas
-            canvas.drawBitmap(bitmap, xPosition, yPosition, null);
+
+
 
             // loop through coins array and place on
             for(Coin coin : levelCoins){
@@ -248,7 +279,8 @@ public class BallGame extends Activity implements SensorEventListener {
                 invalidate();
             }
 
-
+            //draw ball
+            canvas.drawBitmap(bitmap, xPosition, yPosition, null);
             invalidate();
         }
 
@@ -261,6 +293,8 @@ public class BallGame extends Activity implements SensorEventListener {
                 return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.coin2), 50, 50, true);
             case "sp":
                 return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.coin_extra), 50, 50, true);
+            case "bad":
+                return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.coin_bad), 50, 50, true);
             default:
                 return null;
         }
@@ -300,12 +334,23 @@ public class BallGame extends Activity implements SensorEventListener {
             // get the column index for each data item
             int nameIndex = result.getColumnIndex("levelname");
             int imgsrcIndex = result.getColumnIndex("imgsrc");
+            int levelCompleted = result.getColumnIndex("levelcompleted");
 
-            currentLevel = new Level(result.getString(nameIndex), result.getString(imgsrcIndex));
+            currentLevel = new Level(result.getString(nameIndex), result.getString(imgsrcIndex), result.getString(levelCompleted));
 
             levelCoins = currentLevel.getCoins();
             result.close(); // close the result cursor
             databaseConnector.close(); // close database connection
         } // end method onPostExecute
     }
+
+    private void showEndGameModal(){
+        HashMap<String, String> options = new HashMap<String, String>();
+        options.put("score", totalLevelCoinCount+"");
+        options.put("time", "still need timer");
+
+        CustomModal cm = new CustomModal(this, "level_complete", options);
+    }
+
+
 }

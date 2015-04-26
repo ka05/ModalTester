@@ -63,7 +63,7 @@ public class DatabaseConnector
    // return a Cursor with all contact information in the database
    public Cursor getAllLevels()
    {
-      return database.query("levels", new String[] {"_id", "levelname"},
+      return database.query("levels", new String[] {"_id", "levelname", "levelcompleted"},
          null, null, null, null, "levelname");
    } // end method getAllContacts
 
@@ -171,7 +171,7 @@ public class DatabaseConnector
          // query to create a new table named contacts
          String createQuery = "CREATE TABLE levels" +
             "(_id integer primary key autoincrement," +
-            "levelname TEXT, imgsrc TEXT);";
+            "levelname TEXT, imgsrc TEXT, levelcompleted TEXT);";
                   
          db.execSQL(createQuery); // execute the query
          System.out.println("db path: " + db.getPath());
@@ -187,18 +187,18 @@ public class DatabaseConnector
 
        public void insertLevels(SQLiteDatabase db){
            ArrayList<Level> levels = new ArrayList<>();
-           levels.add(new Level("Level 1", "lvl1_preview"));
-           levels.add(new Level("Level 2", "lvl2_preview"));
-           levels.add(new Level("Level 3", "lvl3_preview"));
-           levels.add(new Level("Level 4", "lvl4_preview"));
-           levels.add(new Level("Level 5", "lvl5_preview"));
-           levels.add(new Level("Level 6", "lvl6_preview"));
-           levels.add(new Level("Level 7", "lvl7_preview"));
+           levels.add(new Level("Level 1", "lvl1_preview", "false"));
+           levels.add(new Level("Level 2", "lvl2_preview", "false"));
+           levels.add(new Level("Level 3", "lvl3_preview", "false"));
+           levels.add(new Level("Level 4", "lvl4_preview", "false"));
+           levels.add(new Level("Level 5", "lvl5_preview", "false"));
+           levels.add(new Level("Level 6", "lvl6_preview", "false"));
+           levels.add(new Level("Level 7", "lvl7_preview", "false"));
 
            for(Level level : levels) {
 
                String createQuery = "INSERT INTO levels" +
-                       "(levelname, imgsrc) VALUES ('" + level.getLevelName() + "', '" + level.getImgSrc() + "');";
+                       "(levelname, imgsrc, levelcompleted) VALUES ('" + level.getLevelName() + "', '" + level.getImgSrc() + "', '" + level.getLevelCompleted() + "');";
 
                db.execSQL(createQuery); // execute the query
            }

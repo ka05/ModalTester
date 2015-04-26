@@ -22,6 +22,9 @@ public class Coin {
             case "sp":
                 this.value = 50;
                 break;
+            case "bad":
+                this.value = -100;
+                break;
         }
     }
 

@@ -38,7 +38,7 @@
                 android:text="Close"
                 android:id="@+id/btnClose"
                 android:layout_weight="1"
-                android:background="@drawable/btn_bg"
+                android:background="@drawable/btn"
                 android:textColor="#ffffffff"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
